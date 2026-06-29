@@ -1,0 +1,10 @@
+node_modules/
+frontend/node_modules/
+
+.env
+*.env
+frontend/.env
+backend/.env
+
+dist/
+build/
