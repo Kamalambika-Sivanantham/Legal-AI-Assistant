@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'https://legal-ai-assistant-mpyo.onrender.com',
+  baseURL: 'https://legal-ai-assistant-drrx.onrender.com',
   timeout: 60000,
   headers: { 'Content-Type': 'application/json' },
 })
