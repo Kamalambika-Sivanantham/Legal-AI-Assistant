@@ -1,7 +1,7 @@
-# Load .env FIRST — before any other local imports that might read env vars
 from dotenv import load_dotenv
 import os
-import google.generativeai as genai
+
+from google import genai
 from pydantic import BaseModel
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,10 +11,8 @@ load_dotenv()
 
 api_key = os.getenv("GEMINI_API_KEY")
 
-if api_key:
-    genai.configure(api_key=api_key)
-else:
-    print("WARNING: GEMINI_API_KEY not found")
+client = genai.Client(api_key=api_key)
+
 app = FastAPI(
     title="Legal AI Assistant API",
     description="Multi-Agent Legal AI powered by Google Gemini",
@@ -23,8 +21,10 @@ app = FastAPI(
 
 def generate_response(prompt):
     try:
-        model = genai.GenerativeModel("gemini-2.5-flash")
-        response = model.generate_content(prompt)
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt
+        )
         return response.text
     except Exception as e:
         return f"Gemini Error: {str(e)}"
@@ -49,7 +49,6 @@ async def root():
 
 class ChatRequest(BaseModel):
     prompt: str
-
 
 @app.post("/chat")
 async def chat(req: ChatRequest):
