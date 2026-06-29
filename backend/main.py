@@ -11,10 +11,10 @@ load_dotenv()
 
 api_key = os.getenv("GEMINI_API_KEY")
 
-if not api_key:
-    raise Exception("Gemini API key missing")
-
-genai.configure(api_key=api_key)
+if api_key:
+    genai.configure(api_key=api_key)
+else:
+    print("WARNING: GEMINI_API_KEY not found")
 app = FastAPI(
     title="Legal AI Assistant API",
     description="Multi-Agent Legal AI powered by Google Gemini",
